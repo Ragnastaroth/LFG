@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{user.username}}'s Profile page{% endblock %}
+
+{% block body %}
+    <section>
+        <article class="user_container">
+            <h1>{{user.username}}</h1>
+            <img src="{{ asset('assets/medias/img/upload_directory/' ~ user.img) }}">
+            <p>{{user.description}}</p>
+            <a href="{{ path('app_user_edit', {'id': app.user.id}) }}">Edit your profile</a>
+            <a href="{{ path('app_game_index') }}">Back to home</a>
+        </article>
+    </section>
+{% endblock %}

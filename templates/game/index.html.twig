@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Game index{% endblock %}
+
+{% block body %}
+    {% include 'commons/_header.html.twig' %}
+     {% if app.user %}
+        <p>Welcome Player {{app.user.username}}<img src="{{ asset('assets/medias/img/upload_directory/' ~ app.user.img) }}"></p>
+    {% endif %}
+    <h1>Game index</h1>
+    {% for message in app.flashes('success')%}
+        {{message}}
+    {% endfor %}
+
+    <section>
+        {% for game in games %}
+            <article>
+                <h2>{{game.name}}</h2>
+                <img src="{{ asset('assets/medias/img/upload_directory/' ~ game.img) }}" alt="A picture of {{game.name}}">
+                <a href="{{ path('app_game_show', {'id': game.id}) }}">See the game's community</a>
+                <p>{{game.description}}</p>
+            </article>  
+        {% endfor %}
+    </section>
+
+    <a href="{{ path('app_game_new') }}">Add a new game</a>
+
+    {% include 'commons/_footer.html.twig' %}
+    
+{% endblock %}
+
+

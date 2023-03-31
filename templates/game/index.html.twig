@@ -4,8 +4,10 @@
 
 {% block body %}
     {% include 'commons/_header.html.twig' %}
-     {% if app.user %}
-        <p>Welcome Player {{app.user.username}}<img src="{{ asset('assets/medias/img/upload_directory/' ~ app.user.img) }}"></p>
+    {% if app.user %}
+        <p>Welcome Player {{app.user.username}}<img src="{{ asset('assets/medias/img/upload_directory/' ~ app.user.img) }}" !></p>
+    {% else %}
+        <p>Welcome player !</p>
     {% endif %}
     <h1>Game index</h1>
     {% for message in app.flashes('success')%}
@@ -22,9 +24,7 @@
             </article>  
         {% endfor %}
     </section>
-
-    <a href="{{ path('app_game_new') }}">Add a new game</a>
-
+    
     {% include 'commons/_footer.html.twig' %}
     
 {% endblock %}

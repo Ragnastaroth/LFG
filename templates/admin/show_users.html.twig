@@ -1,0 +1,7 @@
+{% for user in users %}
+    <article>
+        <h2>{{user.username}}</h2>
+        <img src="{{ asset('assets/medias/img/upload_directory/' ~ user.img) }}">
+        <p>{{user.description}}</p>
+    </article>
+{% endfor %}

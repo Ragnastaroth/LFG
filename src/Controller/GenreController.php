@@ -21,7 +21,7 @@ class GenreController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_genre_new', methods: ['GET', 'POST'])]
+    #[Route('/admin/new', name: 'app_genre_new', methods: ['GET', 'POST'])]
     public function new(Request $request, GenreRepository $genreRepository): Response
     {
         $genre = new Genre();
@@ -40,7 +40,7 @@ class GenreController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_genre_show', methods: ['GET'])]
+    #[Route('/admin/{id}', name: 'app_genre_show', methods: ['GET'])]
     public function show(Genre $genre): Response
     {
         return $this->render('genre/show.html.twig', [
@@ -48,7 +48,7 @@ class GenreController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_genre_edit', methods: ['GET', 'POST'])]
+    #[Route('/admin/{id}/edit', name: 'app_genre_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Genre $genre, GenreRepository $genreRepository): Response
     {
         $form = $this->createForm(GenreType::class, $genre);
@@ -66,7 +66,7 @@ class GenreController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_genre_delete', methods: ['POST'])]
+    #[Route('/admin/{id}', name: 'app_genre_delete', methods: ['POST'])]
     public function delete(Request $request, Genre $genre, GenreRepository $genreRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$genre->getId(), $request->request->get('_token'))) {

@@ -1,12 +1,16 @@
 <header>
     <nav>
         <ul>
-            <li><a href="{{ path('app_game_index')}}">Home</a></li>
-            <li> <a href="{{ path('app_user', {'id': app.user.id}) }}">Profile</a></li>
+            <li> <a href="{{ path('app_game_index')}}">Home</a> </li>
             {% if app.user %}
-            <li><a href="{{ path('app_logout')}}">Logout</a></li>
+                {% if app.user.roles == ["ROLE_USER"]%}
+                    <li> <a href="{{ path('app_user', {'id': app.user.id}) }}">Profile</a> </li>
+                    <li> <a href="{{ path('app_logout')}}">Logout</a> </li>
+                {% elseif app.user.roles == ["ROLE_ADMIN"] or app.user.roles == ["ROLE_SUPERADMIN"] or app.user.roles == ["ROLE_GOD"] %}
+                    <li> <a href="{{ path('app_genre_show') }}">See and edit genres</a> </li>
+                    <li> <a href="{{ path('app_game_new') }}">Add a new game</a> </li>
             {% else %}
-            <li><a href="{{ path('app_login')}}">Sign In</a></li>
+                <li> <a href="{{ path('app_login')}}">Sign In</a> </li>
             {% endif %}
         </ul>
     </nav>

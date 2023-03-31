@@ -23,7 +23,7 @@ class UserType extends AbstractType
                 'mapped' => false,
             ])
             ->add('description', TextareaType::class, [
-                'label' => 'Description: ',
+                'label' => 'Introduce yourself: ',
             ])
         ;
     }

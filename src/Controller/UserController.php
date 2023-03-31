@@ -32,7 +32,7 @@ class UserController extends AbstractController
             $file = $form->get('img')->getData();
                 $originalNameFile = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
                 $newFileName = $originalNameFile.uniqid().'.'.$file->guessExtension();
-                $file->move($this->getParameter('upload_directory'), $newFileName);
+                $file->move($this->getParameter('profile_directory'), $newFileName);
                 $user->setImg($newFileName);
             
             $userRepository->save($user, true);
@@ -43,6 +43,16 @@ class UserController extends AbstractController
             
             'user' => $user,
             'form' => $form->createView()
+        ]);
+    }
+
+    #[Route('admin/show', name:'app_user_show')]
+    public function showUsers(UserRepository $userRepository): Response
+    
+    {
+        return $this->render('admin/show_users.html.twig', [
+        
+            'users' => $userRepository->findAll()
         ]);
     }
 

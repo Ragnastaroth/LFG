@@ -21,7 +21,7 @@ class GameController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_game_new', methods: ['GET', 'POST'])]
+    #[Route('/admin/new', name: 'app_game_new', methods: ['GET', 'POST'])]
     public function new(Request $request, GameRepository $gameRepository): Response
     {
         $game = new Game();
@@ -57,7 +57,7 @@ class GameController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_game_edit', methods: ['GET', 'POST'])]
+    #[Route('/admin/{id}/edit', name: 'app_game_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Game $game, GameRepository $gameRepository): Response
     {
         $form = $this->createForm(GameType::class, $game);
@@ -76,7 +76,7 @@ class GameController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_game_delete', methods: ['POST'])]
+    #[Route('/admin/{id}', name: 'app_game_delete', methods: ['POST'])]
     public function delete(Request $request, Game $game, GameRepository $gameRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$game->getId(), $request->request->get('_token'))) {

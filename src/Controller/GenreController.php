@@ -40,7 +40,7 @@ class GenreController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/{id}', name: 'app_genre_show', methods: ['GET'])]
+    #[Route('/admin', name: 'app_genre_show', methods: ['GET'])]
     public function show(Genre $genre): Response
     {
         return $this->render('genre/show.html.twig', [

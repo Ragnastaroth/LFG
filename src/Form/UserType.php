@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\User;
+use App\Entity\Game;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -21,11 +23,19 @@ class UserType extends AbstractType
             ->add('img', FileType::class, [
                 'label' => 'Avatar: ',
                 'mapped' => false,
+                'required' => false,
             ])
             ->add('description', TextareaType::class, [
                 'label' => 'Introduce yourself: ',
             ])
-        ;
+            ->add('games', EntityType::class, [
+                'label' => 'My Games',
+                'class' => Game::class,
+                'choice_label' => 'name',
+                'multiple' => true,
+                'expanded' => true,
+                'required' => false,
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -44,7 +44,7 @@ class GenreController extends AbstractController
     public function show(Genre $genre): Response
     {
         return $this->render('genre/show.html.twig', [
-            'genre' => $genre,
+            'genre' => $genre
         ]);
     }
 

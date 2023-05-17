@@ -7,6 +7,6 @@
 
     {{ include('user/_form.html.twig', {'button_label': 'Update your profile'}) }}
 
-    <a href="{{ path('app_user', {'id': app.user.id}) }}">back to profile</a>
+    <a class="btn" href="{{ path('app_user', {'id': app.user.id}) }}">back to profile</a>
 
 {% endblock %}

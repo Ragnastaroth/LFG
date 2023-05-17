@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -35,6 +37,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
 
+    #[ORM\ManyToMany(targetEntity: Game::class, inversedBy: 'users')]
+    private Collection $games;
+
+    #[ORM\OneToMany(mappedBy: 'likee', targetEntity: Like::class)]
+    private Collection $likes;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -65,7 +73,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see UserInterface
      */
-    public function __construct() { $this->roles[] = 'ROLE_USER'; }
+    
+    public function __construct() 
+    {   
+        $this->roles[] = 'ROLE_USER';
+        $this->games = new ArrayCollection();
+        $this->likes = new ArrayCollection();
+    }
+
     public function getRoles(): array
     {
         $roles = $this->roles;
@@ -128,5 +143,72 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->description = $description;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Game>
+     */
+    public function getGames(): Collection
+    {
+        return $this->games;
+    }
+
+    public function addGame(Game $game): self
+    {
+        if (!$this->games->contains($game)) {
+            $this->games->add($game);
+        }
+
+        return $this;
+    }
+
+    public function removeGame(Game $game): self
+    {
+        $this->games->removeElement($game);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Like>
+     */
+    public function getLikes(): Collection
+    {
+        return $this->likes;
+    }
+
+    public function addLike(Like $like): self
+    {
+        if (!$this->likes->contains($like)) {
+            $this->likes->add($like);
+            $like->setLiker($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLike(Like $like): self
+    {
+        if ($this->likes->removeElement($like)) {
+            // set the owning side to null (unless already changed)
+            if ($like->getLiker() === $this) {
+                $like->setLiker(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function isLikedByCurrentUser(User $currentUser): bool
+    {
+    $likes = $this->likes;
+
+    foreach ($likes as $like) {
+        if ($like->getLiker() === $currentUser) {
+            return true;
+        }
+    }
+
+    return false;
     }
 }

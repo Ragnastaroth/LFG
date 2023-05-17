@@ -34,7 +34,7 @@ class RegistrationFormType extends AbstractType
                     ]
                 ],
                 'second_options' => [
-                    'label' => 'Repeat Password',
+                    'label' => 'Repeat Your Password',
                     'attr' => [
                         'placeholder' => 'Your password, again']
                 ],

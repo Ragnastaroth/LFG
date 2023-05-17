@@ -3,27 +3,45 @@
 {% block title %}Game index{% endblock %}
 
 {% block body %}
-    {% include 'commons/_header.html.twig' %}
-    {% if app.user %}
-        <p>Welcome Player {{app.user.username}}<img src="{{ asset('assets/medias/img/upload_directory/' ~ app.user.img) }}" !></p>
-    {% else %}
-        <p>Welcome player !</p>
-    {% endif %}
-    <h1>Game index</h1>
-    {% for message in app.flashes('success')%}
-        {{message}}
-    {% endfor %}
 
-    <section>
+
+
+    <h1 id="h1">
+        <video id="logo" autoplay muted loop>
+            <source src="{{asset('assets/medias/videos/LFGLogo.mp4') }}" type="video/mp4">
+        </video>
+    </h1>
+
+    {% include 'commons/_header.html.twig' %}
+
+    <div class="user_popup">
+        {% if app.user %}
+            {% if app.user.img %}
+                <img src="{{ asset('assets/medias/img/profile_directory/' ~ app.user.img) }}">
+            {% else %}
+                <img src="{{ asset('assets/medias/img/profile_directory/random_user.png') }}">
+            {% endif %}
+            <p>Welcome Player {{app.user.username}}</p>
+        {% else %}
+            <p>Welcome player !</p>
+        {% endif %}
+    </div>
+
+    <section class="games_section">
+
+    <h2>Our Community Games</h2>
+        <div class="games_container">
         {% for game in games %}
-            <article>
-                <h2>{{game.name}}</h2>
-                <img src="{{ asset('assets/medias/img/upload_directory/' ~ game.img) }}" alt="A picture of {{game.name}}">
-                <a href="{{ path('app_game_show', {'id': game.id}) }}">See the game's community</a>
+            <article class="game_container">
+                <h3>{{game.name}}</h3>
+                <div class="thumbnail_container">
+                    <img src="{{ asset('assets/medias/img/game_directory/' ~ game.img) }}" alt="A picture of the {{game.name}}">
+                </div>
+                <a class="btn" href="{{ path('app_game_show', {'id': game.id}) }}">See the game's community</a>
                 <p>{{game.description}}</p>
             </article>  
         {% endfor %}
-    </section>
+        </div>
     
     {% include 'commons/_footer.html.twig' %}
     

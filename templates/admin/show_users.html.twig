@@ -1,7 +1,13 @@
-{% for user in users %}
-    <article>
-        <h2>{{user.username}}</h2>
-        <img src="{{ asset('assets/medias/img/upload_directory/' ~ user.img) }}">
-        <p>{{user.description}}</p>
-    </article>
-{% endfor %}
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <section>
+        {% for user in users %}
+            <article>
+                <h3>{{user.username}}</h3>
+                <img src="{{ asset('assets/medias/img/upload_directory/' ~ user.img) }}">
+                <p>{{user.description}}</p>
+            </article>
+        {% endfor %}
+    </section>
+{% endblock %}

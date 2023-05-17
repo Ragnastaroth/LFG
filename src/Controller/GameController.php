@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Game;
 use App\Form\GameType;
 use App\Repository\GameRepository;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,10 +15,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class GameController extends AbstractController
 {
     #[Route('/', name: 'app_game_index', methods: ['GET'])]
-    public function index(GameRepository $gameRepository): Response
+    public function index(GameRepository $gameRepository, UserRepository $userRepository): Response
     {
         return $this->render('game/index.html.twig', [
             'games' => $gameRepository->findAll(),
+            'users' => $userRepository->findAll(),
         ]);
     }
 
@@ -33,7 +35,7 @@ class GameController extends AbstractController
             $file = $form->get('img')->getData();
                 $originalNameFile = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
                 $newFileName = $originalNameFile.uniqid().'.'.$file->guessExtension();
-                $file->move($this->getParameter('upload_directory'), $newFileName);
+                $file->move($this->getParameter('game_directory'), $newFileName);
                 $game->setImg($newFileName);
         
             $gameRepository->save($game, true);

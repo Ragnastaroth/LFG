@@ -8,14 +8,7 @@
                     <li> <a class="btn" href="{{ path('app_logout')}}">Logout</a> </li>
                 {% elseif app.user.roles == ["ROLE_ADMIN"] or app.user.roles == ["ROLE_SUPERADMIN"] or app.user.roles == ["ROLE_GOD"] %}
                     <li> <a class="btn" href="{{ path('app_user', {'id': app.user.id}) }}">My Profile</a> </li>
-                    <div id="admin_commands">
-                    <li class="btn" id="adminBtn">Moderation</li>
-                            <ul id="admin_list" class="dNone">
-                                <li> <a href="{{ path('app_genre_index') }}">See and edit genres</a> </li>
-                                <li> <a href="{{ path('app_game_new') }}">Add a new game</a> </li>
-                                <li> <a href="{{ path('app_user_index') }}">See all users</a> </li>
-                            </ul>
-                    </div>
+                    <li> <a class="btn" href="{{ path('moderation_app')}}">Moderation</a></li>
                     <li> <a class="btn" href="{{ path('app_logout')}}">Logout</a> </li>
                 {% endif %}
             {% else %}
@@ -27,7 +20,3 @@
         </ul>
     </nav>
 </header>
-
-{% block javascript %}
-<script src="{{ asset('assets/js/nav_scripts.js') }}"></script>
-{% endblock %}

@@ -31,7 +31,7 @@ class GenreController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $genreRepository->save($genre, true);
 
-            return $this->redirectToRoute('app_genre_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('moderation_app');
         }
 
         return $this->renderForm('genre/new.html.twig', [
@@ -57,7 +57,7 @@ class GenreController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $genreRepository->save($genre, true);
 
-            return $this->redirectToRoute('app_genre_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('moderation_app',);
         }
 
         return $this->renderForm('genre/edit.html.twig', [
@@ -73,6 +73,6 @@ class GenreController extends AbstractController
             $genreRepository->remove($genre, true);
         }
 
-        return $this->redirectToRoute('app_genre_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('moderation_app',);
     }
 }

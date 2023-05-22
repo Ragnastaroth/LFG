@@ -16,11 +16,10 @@ use Symfony\Component\Routing\Annotation\Route;
 class GameController extends AbstractController
 {
     #[Route('/', name: 'app_game_index', methods: ['GET'])]
-    public function index(GameRepository $gameRepository, UserRepository $userRepository): Response
+    public function index(GameRepository $gameRepository): Response
     {
         return $this->render('game/index.html.twig', [
             'games' => $gameRepository->findAll(),
-            'users' => $userRepository->findAll(),
         ]);
     }
 
@@ -51,7 +50,7 @@ class GameController extends AbstractController
 
             $this->addFlash('success', 'Game successfully added !');
 
-            return $this->redirectToRoute('app_game_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('moderation_app');
         }
 
         return $this->renderForm('game/new.html.twig', [
@@ -78,7 +77,7 @@ class GameController extends AbstractController
             
             $gameRepository->save($game, true);
 
-            return $this->redirectToRoute('app_game_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('moderation_app');
         }
 
         return $this->renderForm('game/edit.html.twig', [
@@ -94,6 +93,6 @@ class GameController extends AbstractController
             $gameRepository->remove($game, true);
         }
 
-        return $this->redirectToRoute('app_game_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('moderation_app',);
     }
 }

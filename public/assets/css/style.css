@@ -257,28 +257,6 @@ nav a:hover {
   color: purple;
 }
 
-#admin_commands #adminBtn:hover {
-  color: purple;
-  cursor: pointer;
-  position: relative;
-}
-#admin_commands #admin_list {
-  position: absolute;
-  border: 1px solid black;
-  border-radius: 10px;
-  top: 72%;
-  left: 56.5%;
-  background-color: white;
-  padding: 1rem;
-}
-#admin_commands #admin_list a {
-  color: black;
-}
-#admin_commands #admin_list a:hover {
-  text-shadow: 0 0 7px #fff, 0 0 10px #9D00FF, 0 0 21px #9D00FF, 0 0 42px #9D00FF, 0 0 82px #9D00FF, 0 0 92px #9D00FF, 0 0 102px #9D00FF, 0 0 151px #9D00FF;
-  cursor: pointer;
-}
-
 .user_popup {
   display: flex;
   flex-direction: column;
@@ -345,6 +323,33 @@ nav a:hover {
   gap: 1rem;
 }
 .users_section .users_container .user_container .profile_pic img {
+  height: 200px;
+  width: 200px;
+  border-radius: 50%;
+}
+
+.mentors_section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+.mentors_section .users_container {
+  width: 90vw;
+  height: auto;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 3rem;
+}
+.mentors_section .users_container .user_container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+.mentors_section .users_container .user_container .profile_pic img {
   height: 200px;
   width: 200px;
   border-radius: 50%;
@@ -454,6 +459,113 @@ nav a:hover {
   width: 100px;
   height: 100px;
   border-radius: 50%;
+}
+
+h1 {
+  font-family: "zen";
+  font-size: 3rem;
+  color: gold;
+  margin-bottom: 4rem;
+}
+
+#admin_game {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+#admin_game #gameBtn {
+  margin: 3rem auto;
+  font-size: 2rem;
+}
+#admin_game #addgameBtn {
+  margin: 0.25rem auto;
+  font-size: 2rem;
+}
+#admin_game #games_mod_container .games_container {
+  width: 90vw;
+  height: auto;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+#admin_game #games_mod_container .game_container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+#admin_game #games_mod_container .game_container .thumbnail_container {
+  height: 350px;
+  width: 350px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+#admin_user {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+#admin_user #userBtn {
+  margin: 3rem auto;
+  font-size: 2rem;
+}
+#admin_user #users_mod_container .users_container {
+  width: 90vw;
+  height: auto;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+#admin_user #users_mod_container .user_container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+#admin_user #users_mod_container .user_container .profile_pic img {
+  height: 200px;
+  width: 200px;
+  border-radius: 50%;
+}
+
+#admin_genre {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+#admin_genre #genreBtn {
+  margin: 3rem auto;
+  font-size: 2rem;
+}
+#admin_genre #addgenreBtn {
+  margin: 0.25rem auto;
+  font-size: 2rem;
+}
+#admin_genre #genres_mod_container .genres_container {
+  width: 90vw;
+  height: auto;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+#admin_genre #genres_mod_container .genre_container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
 }
 
 footer {

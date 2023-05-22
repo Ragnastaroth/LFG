@@ -15,7 +15,7 @@
             </div>
             <p>{{user.description}}</p>
             {% if app.user.isFriendWith(user) or app.user.id == user.id %}
-                <p class="contact">{{user.contact}}</p>
+                <p>Discord: <span class="contact">{{user.contact}}</span></p>
             {% endif %}
             <p class="btn">
                 {% if user.mentor == 1 %}
@@ -104,7 +104,7 @@
             {% if app.user %}
                 {% if user.id == app.user.id %}
                 <a class="btn" href="{{ path('app_user_edit', {'id': app.user.id}) }}">Edit your profile</a>
-                <a class="btn" href ="">Edit your gaming profile</a>
+                <a class="btn" href ="{{ path('app_profile_new')}}">Edit your gaming profile</a>
                 {% endif %}
                 <a class="btn" href="{{ path('app_index') }}">Back to home</a>
             {% else %}

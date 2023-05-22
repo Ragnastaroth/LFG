@@ -187,8 +187,65 @@ h3 {
   text-align: center;
 }
 
+.profile_edit {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.profile_edit form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+.profile_edit form button {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+.profile_edit .profile_form {
+  margin-top: 5%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.profile_edit .profile_form #user {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.profile_edit .profile_form #user div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+.profile_edit .profile_form #user div:nth-child(5) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+.profile_edit .profile_form #user div:nth-child(5) #user_mentor {
+  display: flex;
+  flex-flow: row wrap;
+}
+.profile_edit .profile_form #user div:nth-child(6) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+.profile_edit .profile_form #user div:nth-child(6) #user_games {
+  display: flex;
+  flex-flow: row wrap;
+}
+
 nav > ul {
   display: flex;
+  align-items: center;
   justify-content: space-around;
   background-color: gray;
   margin: 0 2rem;
@@ -242,10 +299,12 @@ nav a:hover {
 }
 .games_section .games_container {
   width: 90vw;
+  height: auto;
   display: flex;
   flex-flow: row wrap;
   justify-content: space-around;
   align-items: center;
+  gap: 2rem;
   margin-bottom: 3rem;
 }
 .games_section .game_container {
@@ -272,6 +331,7 @@ nav a:hover {
 }
 .users_section .users_container {
   width: 90vw;
+  height: auto;
   display: flex;
   flex-flow: row wrap;
   justify-content: space-around;
@@ -296,6 +356,20 @@ nav a:hover {
   align-items: center;
   gap: 1rem;
   margin: auto;
+}
+
+.username {
+  font-family: "zen";
+  font-size: 4rem;
+  color: gold;
+  margin: 2rem auto 4rem;
+}
+
+.contact {
+  font-family: "zen";
+  font-size: 2rem;
+  color: gold;
+  margin: 2rem auto 4rem;
 }
 
 .user_page {
@@ -327,13 +401,69 @@ nav a:hover {
   border-radius: 50%;
 }
 
+#friendzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+#friendzone #request_infos_container .sender_container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+#friendzone #request_infos_container .sender_container p .sender_name {
+  color: gold;
+  font-size: 1.5rem;
+}
+#friendzone #request_infos_container .sender_container .sender_pic {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
+#friendzone #request_infos_container .request_choices_container {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 1rem;
+}
+#friendzone #friendlist {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+#friendzone #friendlist #friends_container {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  gap: 1rem;
+}
+#friendzone #friendlist #friends_container .friend_container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+#friendzone #friendlist #friends_container .friend_container .friend_name {
+  color: gold;
+  font-size: 1.5rem;
+}
+#friendzone #friendlist #friends_container .friend_container .friend_pic {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
+
 footer {
-  margin-top: 100%;
   padding: 1.5rem 1.5rem;
   display: flex;
   justify-content: space-around;
   align-items: center;
   background-color: gray;
+  margin: 90% 2rem 0 2rem;
+  border-radius: 10px;
 }
 
 .footer_container > a::after {

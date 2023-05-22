@@ -4,8 +4,10 @@ namespace App\Form;
 
 use App\Entity\Game;
 use App\Entity\Genre;
+use App\Entity\Gameplay;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -33,8 +35,7 @@ class GameType extends AbstractType
                 'choice_label' => 'name',
                 'multiple' => true,
                 'expanded' => true
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

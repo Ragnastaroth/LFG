@@ -17,8 +17,9 @@
     </head>
     <body>
         {% block body %}{% endblock %}
-        {% block javascript %}{% endblock %}
-        <script src="{{ asset('assets/js/nav_scripts.js') }}"></script>
+        {% block footer %}
+            {% include 'commons/_footer.html.twig' %}
+        {% endblock %}
     </body>
 
 </html>

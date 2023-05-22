@@ -7,7 +7,7 @@
             <article class="showed_game">
                 <h2>{{game.name}}</h2>
                 <div class="thumbnail_container">
-                    <img src="{{ asset('assets/medias/img/upload_directory/' ~ game.img) }}" alt="A picture of the {{game.name}}">
+                    <img src="{{ asset('assets/medias/img/game_directory/' ~ game.img) }}" alt="A picture of the {{game.name}}">
                 </div>
                 {% for genre in game.genreId %}
                 <p>{{genre.name}}</p>
@@ -16,9 +16,11 @@
             
                 <a class="btn" href="{{ path('app_game_index') }}">back to list</a>
 
-                <a class="btn" href="{{ path('app_game_edit', {'id': game.id}) }}">edit</a>
-
-                {{ include('game/_delete_form.html.twig') }}
+                
+                {% if app.user.roles == ["ROLE_ADMIN"] or app.user.roles == ["ROLE_SUPERADMIN"] or app.user.roles == ["ROLE_GOD"] %}
+                    <a class="btn" href="{{ path('app_game_edit', {'id': game.id}) }}">edit</a>
+                    {{ include('game/_delete_form.html.twig') }}
+                {% endif %}
             </article>
 {% endblock %}
  

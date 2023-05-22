@@ -43,6 +43,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'likee', targetEntity: Like::class)]
     private Collection $likes;
 
+    #[ORM\Column]
+    private ?bool $mentor = null;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Profile::class)]
+    private Collection $profiles;
+
+    #[ORM\OneToMany(mappedBy: 'sender', targetEntity: Friendship::class)]
+    private Collection $sentFriendRequests;
+
+    #[ORM\OneToMany(mappedBy: 'recipient', targetEntity: Friendship::class, cascade: ['persist', 'remove'])]
+    private Collection $receivedFriendRequests;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $contact = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -79,6 +94,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->roles[] = 'ROLE_USER';
         $this->games = new ArrayCollection();
         $this->likes = new ArrayCollection();
+        $this->profiles = new ArrayCollection();
+        $this->sentFriendRequests = new ArrayCollection();
+        $this->receivedFriendRequests = new ArrayCollection();     
     }
 
     public function getRoles(): array
@@ -211,4 +229,148 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     return false;
     }
+
+    public function isMentor(): ?bool
+    {
+        return $this->mentor;
+    }
+
+    public function setMentor(bool $mentor): self
+    {
+        $this->mentor = $mentor;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Profile>
+     */
+    public function getProfiles(): Collection
+    {
+        return $this->profiles;
+    }
+
+    public function addProfile(Profile $profile): self
+    {
+        if (!$this->profiles->contains($profile)) {
+            $this->profiles->add($profile);
+            $profile->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProfile(Profile $profile): self
+    {
+        if ($this->profiles->removeElement($profile)) {
+            // set the owning side to null (unless already changed)
+            if ($profile->getUser() === $this) {
+                $profile->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Friendship>
+     */
+    public function getReceivedFriendRequests(): Collection
+    {
+        return $this->receivedFriendRequests;
+    }
+
+    public function removeReceivedFriendRequest(Friendship $friendship): void
+    {
+        $this->receivedFriendRequests->removeElement($friendship);              //????
+    }
+
+    public function sendFriendRequest(User $recipient): void
+    {
+        $friendship = new Friendship();
+        $friendship->setSender($this);
+        $friendship->setRecipient($recipient);
+
+        $this->sentFriendRequests->add($friendship);
+        $recipient->getReceivedFriendRequests()->add($friendship);
+    }
+
+    public function acceptFriendRequest(Friendship $friendship): void
+    {
+        if ($friendship->getRecipient() === $this) {
+            $friendship->setAccepted(true);
+        }
+    }
+
+    public function removeFriendRequest(Friendship $friendship): void
+    {
+        $this->sentFriendRequests->removeElement($friendship);
+        $this->receivedFriendRequests->removeElement($friendship);
+    }
+
+    public function getFriends(): Collection
+    {
+        $friends = new ArrayCollection();
+
+        foreach ($this->sentFriendRequests as $friendship) {
+            if ($friendship->isAccepted()) {
+                $friends->add($friendship->getRecipient());
+            }
+        }
+
+        foreach ($this->receivedFriendRequests as $friendship) {
+            if ($friendship->isAccepted()) {
+                $friends->add($friendship->getSender());
+            }
+        }
+
+        return $friends;
+    }
+
+    /**
+     * Check if the user has a pending friend request from another user
+     *
+     * @param User $user The user to check for pending friend request
+     * @return bool
+     */
+    public function hasPendingFriendRequestFrom(User $user): bool
+    {
+        foreach ($this->receivedFriendRequests as $friendship) {
+            if ($friendship->getSender() === $user && !$friendship->isAccepted()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function isFriendWith(User $user): bool
+    {
+        foreach ($this->sentFriendRequests as $friendship) {
+            if ($friendship->isAccepted() && $friendship->getRecipient() === $user) {
+                return true;
+            }
+        }
+
+        foreach ($this->receivedFriendRequests as $friendship) {
+            if ($friendship->isAccepted() && $friendship->getSender() === $user) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function getContact(): ?string
+    {
+        return $this->contact;
+    }
+
+    public function setContact(?string $contact): self
+    {
+        $this->contact = $contact;
+
+        return $this;
+    }
 }
+

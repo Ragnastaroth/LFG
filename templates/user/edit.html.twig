@@ -3,10 +3,23 @@
 {% block title %}Edit {{app.user.username}}'s profile{% endblock %}
 
 {% block body %}
-    <h1>Edit Profile</h1>
 
-    {{ include('user/_form.html.twig', {'button_label': 'Update your profile'}) }}
+<section class="profile_edit">
 
+    <h1>Edit {{app.user.username}}'s profile</h1>
+
+    <div class="profile_form">
+        {{ include('user/_form.html.twig', {'button_label': 'Update your profile'}) }}
+    </div>
+    {{ dump(user) }}
     <a class="btn" href="{{ path('app_user', {'id': app.user.id}) }}">back to profile</a>
+
+</section>
+
+{% endblock %}
+
+{% block footer %}
+
+    {% include 'commons/_footer.html.twig' %}
 
 {% endblock %}

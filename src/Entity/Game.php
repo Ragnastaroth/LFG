@@ -142,5 +142,11 @@ class Game
 
         return $this;
     }
+    
+    public function removeEndorsement(): self
+    {
+        $this->endorsement--;
 
+        return $this;
+    }
 }

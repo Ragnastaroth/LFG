@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Friendship;
 use App\Entity\User;
 use App\Form\UserType;
+use App\Repository\FriendshipRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,11 +27,17 @@ class UserController extends AbstractController
     }
 
     #[Route('/user/{id}', name: 'app_user')]
-    public function showProfile(User $user): Response
-    {
+    public function showProfile(User $user, FriendshipRepository $friendshipRepository): Response
+    {   
+        $friendshipRequests = $friendshipRepository->findBy(['recipient' => $user->getId(), 'accepted' => false]);
+        $friends = $user->getFriends();
+
         return $this->render('user/profile.html.twig', [
-            
+
             'user' => $user,
+            'friendshipRequests' => $friendshipRequests,
+            'friends' => $friends,
+
         ]);
     }
 
@@ -49,6 +57,7 @@ class UserController extends AbstractController
                     $entityManager->persist($game);
                     $game->addEndorsement();
                 }
+                
             }
             
             if($file){

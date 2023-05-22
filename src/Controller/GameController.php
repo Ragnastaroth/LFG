@@ -6,6 +6,7 @@ use App\Entity\Game;
 use App\Form\GameType;
 use App\Repository\GameRepository;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,21 +25,29 @@ class GameController extends AbstractController
     }
 
     #[Route('/admin/new', name: 'app_game_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, GameRepository $gameRepository): Response
+    public function new(Request $request, GameRepository $gameRepository, EntityManagerInterface $entityManager): Response
     {
         $game = new Game();
         $form = $this->createForm(GameType::class, $game);
         $form->handleRequest($request);
+        $file = $form->get('img')->getData();
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-            $file = $form->get('img')->getData();
+            if ($file){
+                $file = $form->get('img')->getData();
                 $originalNameFile = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
                 $newFileName = $originalNameFile.uniqid().'.'.$file->guessExtension();
                 $file->move($this->getParameter('game_directory'), $newFileName);
-                $game->setImg($newFileName);
-        
+
+                $oldFileName = $game->getImg();
+                if ($oldFileName && file_exists($this->getParameter('game_directory') . '/' . $oldFileName)) {
+                unlink($this->getParameter('game_directory') . '/' . $oldFileName);
+                }
+                $game->setImg($newFileName); 
+            }
+
             $gameRepository->save($game, true);
+            $entityManager->flush();
 
             $this->addFlash('success', 'Game successfully added !');
 

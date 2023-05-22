@@ -5,7 +5,7 @@
 {% block body %}
     <section>
         <article class="user_page">
-            <h1>{{user.username}}</h1>
+            <h1 class="username">{{user.username}}</h1>
             <div class="profile_pic">
                 {% if user.img %}
                     <img src="{{ asset('assets/medias/img/profile_directory/' ~ user.img) }}">
@@ -14,8 +14,55 @@
                 {% endif %}
             </div>
             <p>{{user.description}}</p>
-            
-            <p></p>
+            {% if app.user.isFriendWith(user) or app.user.id == user.id %}
+                <p class="contact">{{user.contact}}</p>
+            {% endif %}
+            <p class="btn">
+                {% if user.mentor == 1 %}
+                    {{ 'I\'m a part of the Adopt a Noob program'}}
+                {% endif  %}
+            </p>
+            <div id="friendzone">
+                {% if app.user %}
+                    {% if app.user.id == user.id %}
+                        {% if friendshipRequests|length > 0 %}
+                            <a class="request_container btn">You have {{ friendshipRequests|length }} friend request(s)</a>
+                            <div id="request_infos_container" class="dNone">
+                                {% for friendshipRequest in friendshipRequests %}
+                                    <div class="sender_container">
+                                        {% set sender = friendshipRequest.getSender() %}
+                                        <p><span class="sender_name">{{ sender.username }}</span> invited you to become his friend !</p>
+                                        <img class="sender_pic" src="{{ asset('assets/medias/img/profile_directory/' ~ sender.img) }}">
+                                    </div>
+                                    <div class="request_choices_container">
+                                        <a class="btn" href="{{ path('app_user', {'id': sender.id} )}}">Check his profile</a>
+                                        <form action="{{ path('accept_friend_request', {'friendshipId': friendshipRequest.getId()}) }}" method="POST">
+                                            <button type="submit" class="btn">Accept invitation</button>
+                                        </form>
+                                        <form action="{{ path('reject_friend_request', {'friendshipId': friendshipRequest.getId()}) }}" method="POST">
+                                            <button type="submit" class="btn">Refuse invitation</button>
+                                        </form>
+                                    </div>
+                                {% endfor %} 
+                            </div>  
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+                <div id="friendlist">
+                    <a class="btn" id="friendBtn">See all {{user.username}}'s friends</a>
+                    <div id="friends" class="dNone">
+                        <div id="friends_container">
+                        {% for friend in friends %}
+                            <div class="friend_container">
+                                <p><span class="friend_name">{{ friend.username }}</span></p>
+                                <img class="friend_pic" src="{{ asset('assets/medias/img/profile_directory/' ~ friend.img) }}">
+                                <a class="btn" href="{{ path('app_user', {'id': friend.id} )}}">Check {{friend.username}}'s profile</a>
+                            </div>
+                        {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
             <h4>My games</h4>
             <div class="profile_games_container">
                 {% for game in user.games %}
@@ -27,22 +74,37 @@
                     </div>
                 {% endfor %}    
             </div>
-
-            {% if app.user.id != user.id %}
-                {% if user.isLikedByCurrentUser(app.user) %}
-                    <form action="{{ path('unlike_user', {id: user.id}) }}" method="POST">
-                        <button type="submit" class="btn">Unlike <i class="fa-solid fa-thumbs-down"></i></button>
-                    </form>
-                {% else %}
-                    <form action="{{ path('like_user', {id: user.id}) }}" method="POST">
-                        <button type="submit" class="btn">Like <i class="fa-solid fa-thumbs-up"></i></button>
-                    </form>
+            {% if app.user %}
+                {% if app.user.id != user.id %}
+                    {% if user.isLikedByCurrentUser(app.user) %}
+                        <form action="{{ path('unlike_user', {id: user.id}) }}" method="POST">
+                            <button type="submit" class="btn">Unlike <i class="fa-solid fa-thumbs-down"></i></button>
+                        </form>
+                    {% else %}
+                        <form action="{{ path('like_user', {id: user.id}) }}" method="POST">
+                            <button type="submit" class="btn">Like <i class="fa-solid fa-thumbs-up"></i></button>
+                        </form>
+                    {% endif %}
+                {% endif %}
+                {% if app.user.id != user.id %}
+                    {% if not app.user.isFriendWith(user) %}
+                        {% if user.hasPendingFriendRequestFrom(app.user) %}
+                            <form action="{{ path('cancel_friend_request', {recipientId: user.id}) }}" method="POST">
+                                <button type="submit" class="btn">Cancel invitation <i class="fa-solid fa-handshake-slash"></i></button>
+                            </form>
+                        {% else %}
+                            <form action="{{ path('send_friend_request', {recipientId: user.id}) }}" method="POST">
+                                <button type="submit" class="btn">Invite as friend <i class="fa-solid fa-handshake"></i></button>
+                            </form>
+                        {% endif %}
+                    {% endif %}
                 {% endif %}
             {% endif %}
-
+            
             {% if app.user %}
                 {% if user.id == app.user.id %}
                 <a class="btn" href="{{ path('app_user_edit', {'id': app.user.id}) }}">Edit your profile</a>
+                <a class="btn" href ="">Edit your gaming profile</a>
                 {% endif %}
                 <a class="btn" href="{{ path('app_index') }}">Back to home</a>
             {% else %}
@@ -50,4 +112,8 @@
             {% endif %}  
         </article>
     </section>
+{% block javascript %}
+    <script src="{{ asset('assets/js/friendScript.js') }}"></script>
 {% endblock %}
+{% endblock %}
+

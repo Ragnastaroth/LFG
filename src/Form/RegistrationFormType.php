@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -38,6 +39,15 @@ class RegistrationFormType extends AbstractType
                     'attr' => [
                         'placeholder' => 'Your password, again']
                 ],
+            ])
+            ->add('mentor', ChoiceType::class, [
+                'label' => 'Do you wanna be part of the Adopt a Noob program ?',
+                'choices' => [
+                    'I wanna help beginners' => 1,
+                    'That\'s not for me' => 0,
+                ],
+                'mapped' => false,
+                'required' => false,
             ])
         ;
     }

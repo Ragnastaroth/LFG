@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Comment;
-use App\Entity\Friendship;
 use App\Entity\User;
 use App\Form\CommentType;
 use App\Form\UserType;
@@ -35,6 +34,7 @@ class UserController extends AbstractController
         $friends = $user->getFriends();
         $comments = $user->getComments();
         $writer = $this->getUser();
+        $profiles = $user->getProfiles();
 
         $comment = new Comment();
         $commentForm = $this->createForm(CommentType::class, $comment);
@@ -59,6 +59,7 @@ class UserController extends AbstractController
             'friends' => $friends,
             'comments' => $comments,
             'commentForm' => $commentForm->createView(),
+            'profiles' => $profiles,
         ]);
     }
 

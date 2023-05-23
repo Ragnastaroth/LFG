@@ -51,20 +51,22 @@
                     {% endif %}
                 {% endif %}
                 {% if app.user %}
-                    <div id="friendlist">
-                        <a class="btn" id="friendBtn">See all {{user.username}}'s friends</a>
-                        <div id="friends" class="dNone">
-                            <div id="friends_container">
-                            {% for friend in friends %}
-                                <div class="friend_container">
-                                    <p><span class="friend_name">{{ friend.username }}</span></p>
-                                    <img class="friend_pic" src="{{ asset('assets/medias/img/profile_directory/' ~ friend.img) }}">
-                                    <a class="btn" href="{{ path('app_user', {'id': friend.id}) }}">Check {{friend.username}}'s profile</a>
+                    {% if app.user.isFriendWith(user) or app.user.id == user.id %}
+                        <div id="friendlist">
+                            <a class="btn" id="friendBtn">See all {{user.username}}'s friends</a>
+                            <div id="friends" class="dNone">
+                                <div id="friends_container">
+                                {% for friend in friends %}
+                                    <div class="friend_container">
+                                        <p><span class="friend_name">{{ friend.username }}</span></p>
+                                        <img class="friend_pic" src="{{ asset('assets/medias/img/profile_directory/' ~ friend.img) }}">
+                                        <a class="btn" href="{{ path('app_user', {'id': friend.id}) }}">Check {{friend.username}}'s profile</a>
+                                    </div>
+                                {% endfor %}
                                 </div>
-                            {% endfor %}
                             </div>
                         </div>
-                    </div>
+                    {% endif %}
                 {% endif %}
             </div>
             {% if app.user %}
@@ -104,6 +106,11 @@
                             <img src="{{ asset('assets/medias/img/game_directory/' ~ game.img) }}">
                         </div>
                         <p>{{game.name}}</p>
+                        {% for profile in profiles %}
+                            {% if profile.game == game %}
+                                <p>Gameplay Profile: <span>{{ profile.gameplay.style }}</span></p>
+                            {% endif %}
+                        {% endfor %}
                     </div>
                 {% endfor %}    
             </div>

@@ -16,10 +16,11 @@
             
                 <a class="btn" href="{{ path('app_game_index') }}">back to list</a>
 
-                
-                {% if app.user.roles == ["ROLE_ADMIN"] or app.user.roles == ["ROLE_SUPERADMIN"] or app.user.roles == ["ROLE_GOD"] %}
-                    <a class="btn" href="{{ path('app_game_edit', {'id': game.id}) }}">Edit this game</a>
-                    {{ include('game/_delete_form.html.twig') }}
+                {% if app.user %}
+                    {% if app.user.roles == ["ROLE_ADMIN"] or app.user.roles == ["ROLE_SUPERADMIN"] or app.user.roles == ["ROLE_GOD"] %}
+                        <a class="btn" href="{{ path('app_game_edit', {'id': game.id}) }}">Edit this game</a>
+                        {{ include('game/_delete_form.html.twig') }}
+                    {% endif %}
                 {% endif %}
             </article>
 {% endblock %}

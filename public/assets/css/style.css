@@ -73,6 +73,26 @@ h3 {
   color: gold;
 }
 
+.box {
+  --border-size: 3px;
+  --border-angle: 0turn;
+  background-image: conic-gradient(from var(--border-angle), #213, #112 50%, #213), conic-gradient(from var(--border-angle), transparent 20%, #08f, #f03);
+  background-size: calc(100% - var(--border-size) * 2) calc(100% - var(--border-size) * 2), cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  animation: bg-spin 3s linear infinite;
+}
+@keyframes bg-spin {
+  to {
+    --border-angle: 1turn;
+  }
+}
+
+@property --border-angle {
+  syntax: "<angle>";
+  inherits: true;
+  initial-value: 0turn;
+}
 #homepage {
   height: 100vh;
   background-color: black;
@@ -459,6 +479,48 @@ nav a:hover {
   width: 100px;
   height: 100px;
   border-radius: 50%;
+}
+
+#wall {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  width: 90vw;
+  padding: 2rem;
+  margin: 4rem auto;
+}
+#wall h4 {
+  color: gold;
+  font-size: 2rem;
+}
+#wall .comments .comment {
+  border: 2px solid #fff;
+  border-radius: 10px;
+  padding: 1rem;
+}
+#wall .comments .comment p:nth-child(1) {
+  color: gold;
+  font-size: 1.5rem;
+  font-family: "zen";
+}
+#wall form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+#wall div:nth-child(1) {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+#wall button {
+  text-shadow: 0 0 7px #fff, 0 0 10px #9D00FF, 0 0 21px #9D00FF, 0 0 42px #9D00FF, 0 0 82px #9D00FF, 0 0 92px #9D00FF, 0 0 102px #9D00FF, 0 0 151px #9D00FF;
+  font-family: "zen";
 }
 
 h1 {

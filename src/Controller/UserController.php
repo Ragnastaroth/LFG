@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Friendship;
 use App\Entity\User;
+use App\Form\CommentType;
 use App\Form\UserType;
 use App\Repository\FriendshipRepository;
 use App\Repository\UserRepository;
@@ -27,17 +29,36 @@ class UserController extends AbstractController
     }
 
     #[Route('/user/{id}', name: 'app_user')]
-    public function showProfile(User $user, FriendshipRepository $friendshipRepository): Response
+    public function showProfile(User $user, FriendshipRepository $friendshipRepository, EntityManagerInterface $entityManager, Request $request): Response
     {   
         $friendshipRequests = $friendshipRepository->findBy(['recipient' => $user->getId(), 'accepted' => false]);
         $friends = $user->getFriends();
+        $comments = $user->getComments();
+        $writer = $this->getUser();
+
+        $comment = new Comment();
+        $commentForm = $this->createForm(CommentType::class, $comment);
+        $commentForm->handleRequest($request);
+
+        if ($commentForm->isSubmitted() && $commentForm->isValid()) {
+            $comment->setWriter($writer);
+            $comment->setUser($this->getUser());
+            $comment->setCreatedAt(new \DateTimeImmutable());
+            $user->addComment($comment);
+    
+            $entityManager->persist($comment);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_user', ['id' => $user->getId()]);
+        }
 
         return $this->render('user/profile.html.twig', [
 
             'user' => $user,
             'friendshipRequests' => $friendshipRequests,
             'friends' => $friends,
-
+            'comments' => $comments,
+            'commentForm' => $commentForm->createView(),
         ]);
     }
 

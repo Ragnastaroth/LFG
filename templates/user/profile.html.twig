@@ -14,8 +14,10 @@
                 {% endif %}
             </div>
             <p>{{user.description}}</p>
-            {% if app.user.isFriendWith(user) or app.user.id == user.id %}
-                <p>Discord: <span class="contact">{{user.contact}}</span></p>
+            {% if app.user %}
+                {% if app.user.isFriendWith(user) or app.user.id == user.id %}
+                    <p>Discord: <span class="contact">{{user.contact}}</span></p>                
+                {% endif %}
             {% endif %}
             <p class="btn">
                 {% if user.mentor == 1 %}
@@ -48,21 +50,52 @@
                         {% endif %}
                     {% endif %}
                 {% endif %}
-                <div id="friendlist">
-                    <a class="btn" id="friendBtn">See all {{user.username}}'s friends</a>
-                    <div id="friends" class="dNone">
-                        <div id="friends_container">
-                        {% for friend in friends %}
-                            <div class="friend_container">
-                                <p><span class="friend_name">{{ friend.username }}</span></p>
-                                <img class="friend_pic" src="{{ asset('assets/medias/img/profile_directory/' ~ friend.img) }}">
-                                <a class="btn" href="{{ path('app_user', {'id': friend.id} )}}">Check {{friend.username}}'s profile</a>
+                {% if app.user %}
+                    <div id="friendlist">
+                        <a class="btn" id="friendBtn">See all {{user.username}}'s friends</a>
+                        <div id="friends" class="dNone">
+                            <div id="friends_container">
+                            {% for friend in friends %}
+                                <div class="friend_container">
+                                    <p><span class="friend_name">{{ friend.username }}</span></p>
+                                    <img class="friend_pic" src="{{ asset('assets/medias/img/profile_directory/' ~ friend.img) }}">
+                                    <a class="btn" href="{{ path('app_user', {'id': friend.id}) }}">Check {{friend.username}}'s profile</a>
+                                </div>
+                            {% endfor %}
                             </div>
-                        {% endfor %}
                         </div>
                     </div>
-                </div>
+                {% endif %}
             </div>
+            {% if app.user %}
+                {% if app.user.isFriendWith(user) or app.user.id == user.id %}
+                    <div id="wall" class="box">
+                        <h4>My Wall</h4>
+                        <div class="comments">
+                            {% for comment in comments %}
+                                <div class="comment">
+                                    <p>{{ comment.content }}</p>
+                                    <p>Posted by: {{ comment.writer.username }}</p>
+                                    <p>Posted at: {{ comment.createdAt|date('Y-m-d H:i:s') }}</p>
+                                    {% if app.user %}
+                                        {% if app.user == comment.user %}
+                                            <a class="btn" href="{{ path('comment_delete', {'id': comment.id}) }}">Delete this comment</a>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                        {% if app.user %}
+                            {{ form_start(commentForm) }}
+                            {{ form_row(commentForm.content) }}
+                            {{ form_end(commentForm) }}
+                        {% endif %}
+                    </div>
+                {% endif %}
+            {% endif %}
+
+
             <h4>My games</h4>
             <div class="profile_games_container">
                 {% for game in user.games %}

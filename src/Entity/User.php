@@ -58,6 +58,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $contact = null;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Comment::class)]
+    private Collection $comments;
+
+    #[ORM\OneToMany(mappedBy: 'writer', targetEntity: Comment::class)]
+    private Collection $writer;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -96,7 +102,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->likes = new ArrayCollection();
         $this->profiles = new ArrayCollection();
         $this->sentFriendRequests = new ArrayCollection();
-        $this->receivedFriendRequests = new ArrayCollection();     
+        $this->receivedFriendRequests = new ArrayCollection();
+        $this->comments = new ArrayCollection();
+        $this->writer = new ArrayCollection();     
     }
 
     public function getRoles(): array
@@ -369,6 +377,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setContact(?string $contact): self
     {
         $this->contact = $contact;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Comment>
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments->add($comment);
+            $comment->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->comments->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getUser() === $this) {
+                $comment->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Comment>
+     */
+    public function getWriter(): Collection
+    {
+        return $this->writer;
+    }
+
+    public function addWriter(Comment $writer): self
+    {
+        if (!$this->writer->contains($writer)) {
+            $this->writer->add($writer);
+            $writer->setWriter($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWriter(Comment $writer): self
+    {
+        if ($this->writer->removeElement($writer)) {
+            // set the owning side to null (unless already changed)
+            if ($writer->getWriter() === $this) {
+                $writer->setWriter(null);
+            }
+        }
 
         return $this;
     }

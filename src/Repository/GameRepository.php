@@ -39,6 +39,15 @@ class GameRepository extends ServiceEntityRepository
         }
     }
 
+
+    public function findByMostEndorsedGames(int $limit = 3): array
+    {
+        $qb = $this->createQueryBuilder('g')
+        ->orderBy('g.endorsement', 'DESC')
+        ->setMaxResults(3);
+
+        return $qb->getQuery()->getResult();
+    }
 //    /**
 //     * @return Game[] Returns an array of Game objects
 //     */

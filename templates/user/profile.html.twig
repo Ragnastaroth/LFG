@@ -80,7 +80,7 @@
                                     <p>Posted by: {{ comment.writer.username }}</p>
                                     <p>Posted at: {{ comment.createdAt|date('Y-m-d H:i:s') }}</p>
                                     {% if app.user %}
-                                        {% if app.user == comment.user %}
+                                        {% if app.user == comment.user or app.user == comment.writer %}
                                             <a class="btn" href="{{ path('comment_delete', {'id': comment.id}) }}">Delete this comment</a>
                                         {% endif %}
                                     {% endif %}

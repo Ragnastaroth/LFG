@@ -15,11 +15,12 @@
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
     </head>
-    <body>
-        {% block body %}{% endblock %}
-        {% block footer %}
-            {% include 'commons/_footer.html.twig' %}
-        {% endblock %}
-    </body>
-
+    <main>
+        <body>           
+            {% block body %}{% endblock %}
+            {% block footer %}
+                {% include 'commons/_footer.html.twig' %}
+            {% endblock %}
+        </body>
+    </main>
 </html>

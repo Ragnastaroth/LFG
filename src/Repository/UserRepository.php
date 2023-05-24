@@ -57,20 +57,16 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     }
 
 
-    
-    // public function findByTopLikedUsers($limit ): array
-    // {
-    // $qb = $this->createQueryBuilder('u');
-    
-    // return $qb
-    // ->select('u.username, COUNT(l.id) as likeCount')
-    // ->leftJoin('u.likes', 'l')
-    // ->groupBy('u.id')
-    // ->orderBy('likeCount', 'DESC')
-    // ->setMaxResults($limit)
-    // ->getQuery()
-    // ->getResult();
-    // }
+    public function findByTopLikedUsers(int $limit = 5): array
+    {
+        $qb = $this->createQueryBuilder('u')
+        ->leftJoin('u.likedBy', 'l')
+        ->groupBy('u')
+        ->orderBy('COUNT(l)', 'DESC')
+        ->setMaxResults($limit);
+
+        return $qb->getQuery()->getResult();
+    }
 
 //    /**
 //     * @return User[] Returns an array of User objects

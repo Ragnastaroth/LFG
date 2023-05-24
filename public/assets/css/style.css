@@ -413,6 +413,7 @@ nav a:hover {
   display: flex;
   justify-content: space-around;
   gap: 1rem;
+  margin-bottom: 5rem;
 }
 .user_page .profile_games_container .profile_game_container {
   display: flex;

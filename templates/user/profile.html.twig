@@ -108,7 +108,8 @@
                         <p>{{game.name}}</p>
                         {% for profile in profiles %}
                             {% if profile.game == game %}
-                                <p>Gameplay Profile: <span>{{ profile.gameplay.style }}</span></p>
+                                <p>Gameplay Profile: <span class="gaming_profile">{{ profile.gameplay.style }}</span></p>
+                                <a class="btn" href="{{ path('app_profile_edit', {'id': profile.id}) }}">Update this profile</a>
                             {% endif %}
                         {% endfor %}
                     </div>
@@ -144,7 +145,7 @@
             {% if app.user %}
                 {% if user.id == app.user.id %}
                 <a class="btn" href="{{ path('app_user_edit', {'id': app.user.id}) }}">Edit your profile</a>
-                <a class="btn" href ="{{ path('app_profile_new')}}">Edit your gaming profile</a>
+                <a class="btn" href ="{{ path('app_profile_new')}}">Create your gaming profiles</a>
                 {% endif %}
                 <a class="btn" href="{{ path('app_index') }}">Back to home</a>
             {% else %}

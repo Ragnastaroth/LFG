@@ -20,10 +20,11 @@ class UserController extends AbstractController
 {
     #[Route('/', name: 'app_user_index', methods: ['GET'])]
     public function showUsers(UserRepository $userRepository): Response
-    
     {
+        $users = $userRepository->findAll();
+
         return $this->render('user/users_index.html.twig', [
-            'users' => $userRepository->findAll()
+            'users' => $users
         ]);
     }
 

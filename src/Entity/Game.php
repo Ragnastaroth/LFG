@@ -33,10 +33,14 @@ class Game
     #[ORM\Column(nullable: true)]
     private ?int $endorsement = 0;
 
+    #[ORM\OneToMany(mappedBy: 'game', targetEntity: Profile::class)]
+    private Collection $profiles;
+
     public function __construct()
     {
         $this->genreId = new ArrayCollection();
         $this->users = new ArrayCollection();
+        $this->profiles = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -146,6 +150,36 @@ class Game
     public function removeEndorsement(): self
     {
         $this->endorsement--;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Profile>
+     */
+    public function getProfiles(): Collection
+    {
+        return $this->profiles;
+    }
+
+    public function addProfile(Profile $profile): self
+    {
+        if (!$this->profiles->contains($profile)) {
+            $this->profiles->add($profile);
+            $profile->setGame($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProfile(Profile $profile): self
+    {
+        if ($this->profiles->removeElement($profile)) {
+            // set the owning side to null (unless already changed)
+            if ($profile->getGame() === $this) {
+                $profile->setGame(null);
+            }
+        }
 
         return $this;
     }

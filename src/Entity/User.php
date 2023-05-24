@@ -40,8 +40,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Game::class, inversedBy: 'users')]
     private Collection $games;
 
-    #[ORM\OneToMany(mappedBy: 'likee', targetEntity: Like::class)]
+    #[ORM\OneToMany(mappedBy: 'liker', targetEntity: Like::class)]
     private Collection $likes;
+
+    #[ORM\OneToMany(mappedBy: 'likee', targetEntity: Like::class)]
+    private Collection $likedBy;
 
     #[ORM\Column]
     private ?bool $mentor = null;
@@ -99,7 +102,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {   
         $this->roles[] = 'ROLE_USER';
         $this->games = new ArrayCollection();
-        $this->likes = new ArrayCollection();
+        $this->likedBy = new ArrayCollection();
         $this->profiles = new ArrayCollection();
         $this->sentFriendRequests = new ArrayCollection();
         $this->receivedFriendRequests = new ArrayCollection();
@@ -200,13 +203,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getLikes(): Collection
     {
-        return $this->likes;
+        return $this->likedBy;
     }
 
     public function addLike(Like $like): self
     {
-        if (!$this->likes->contains($like)) {
-            $this->likes->add($like);
+        if (!$this->likedBy->contains($like)) {
+            $this->likedBy->add($like);
             $like->setLiker($this);
         }
 
@@ -215,7 +218,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function removeLike(Like $like): self
     {
-        if ($this->likes->removeElement($like)) {
+        if ($this->likedBy->removeElement($like)) {
             // set the owning side to null (unless already changed)
             if ($like->getLiker() === $this) {
                 $like->setLiker(null);
@@ -227,7 +230,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function isLikedByCurrentUser(User $currentUser): bool
     {
-    $likes = $this->likes;
+    $likes = $this->likedBy;
 
     foreach ($likes as $like) {
         if ($like->getLiker() === $currentUser) {
